@@ -264,7 +264,7 @@ export class RailNetworkImpl implements RailNetwork {
     for (const neighbor of neighbors) {
       // Limit to the closest 5 stations to avoid running too many pathfinding calls.
       if (paths.length >= 5) break;
-      if (neighbor.distSquared <= minRangeSquared) continue;
+      if (neighbor.distSquared < minRangeSquared) continue;
 
       const neighborStation = this._stationManager.findStation(neighbor.unit);
       if (!neighborStation) continue;
@@ -317,7 +317,7 @@ export class RailNetworkImpl implements RailNetwork {
         distanceToStation === -1;
       if (
         connectionAvailable &&
-        neighbor.distSquared > this.game.config().trainStationMinRange() ** 2
+        neighbor.distSquared >= this.game.config().trainStationMinRange() ** 2
       ) {
         if (this.connect(station, neighborStation)) {
           neighborCluster.addStation(station);
