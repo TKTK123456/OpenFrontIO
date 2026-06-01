@@ -183,7 +183,7 @@ export class GPURenderer {
     [];
 
   constructor(
-    game: GameView,
+    private game: GameView,
     canvas: HTMLCanvasElement,
     header: RendererConfig,
     terrainBytes: Uint8Array,
@@ -420,7 +420,7 @@ export class GPURenderer {
     );
 
     // --- Range circle (ghost preview radius) ---
-    this.rangeCirclePass = new RangeCirclePass(gl, game);
+    this.rangeCirclePass = new RangeCirclePass(gl);
 
     // --- SAM radius overlay (dashed green circles during build mode) ---
     this.samRadiusPass = new SAMRadiusPass(gl, mapW, this.settings);
@@ -881,7 +881,20 @@ export class GPURenderer {
   updateGhostPreview(data: GhostPreviewData | null): void {
     this.structurePass.updateGhostPreview(data);
     this.railroadPass.updateGhostPreview(data);
-    this.rangeCirclePass.updateGhostPreview(data);
+    let rangeCirclePassData = structuredClone(data);
+    if (
+      rangeCirclePassData !== null &&
+      rangeCirclePassData.canUpgrade &&
+      rangeCirclePassData.upgradeTargetTile !== null
+    ) {
+      rangeCirclePassData.tileX = this.game.x(
+        rangeCirclePassData.upgradeTargetTile,
+      );
+      rangeCirclePassData.tileY = this.game.y(
+        rangeCirclePassData.upgradeTargetTile,
+      );
+    }
+    this.rangeCirclePass.updateGhostPreview(rangeCirclePassData);
     this.crosshairPass.updateGhostPreview(data);
     this.worldTextPass.setGhostCostLabel(
       data && data.showCost && data.cost > 0
