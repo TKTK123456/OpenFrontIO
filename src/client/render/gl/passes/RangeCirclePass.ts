@@ -7,9 +7,9 @@
  * Active only when a ghost preview with rangeRadius > 0 is set.
  */
 
+import { GameView } from "../../../../core/game/GameView";
 import type { GhostPreviewData } from "../../types";
 import { createProgram } from "../utils/GlUtils";
-import { GameView } from "../../../../core/game/GameView"
 
 import fragSrc from "../shaders/range-circle/range-circle.frag.glsl?raw";
 import vertSrc from "../shaders/range-circle/range-circle.vert.glsl?raw";
@@ -29,7 +29,10 @@ export class RangeCirclePass {
   private radius = 0;
   private warning = false;
 
-  constructor(gl: WebGL2RenderingContext, private game: GameView) {
+  constructor(
+    gl: WebGL2RenderingContext,
+    private game: GameView,
+  ) {
     this.gl = gl;
     this.program = createProgram(gl, vertSrc, fragSrc);
 
@@ -55,13 +58,13 @@ export class RangeCirclePass {
 
   updateGhostPreview(data: GhostPreviewData | null): void {
     if (data && data.rangeRadius > 0) {
-      if (data.canUpgrade && data.upgradeTargetTile !==null) {
+      if (data.canUpgrade && data.upgradeTargetTile !== null) {
         this.centerX = this.game.x(data.upgradeTargetTile);
         this.centerY = this.game.y(data.upgradeTargetTile);
-      } else { 
-      this.centerX = data.tileX;
-      this.centerY = data.tileY;
-    }
+      } else {
+        this.centerX = data.tileX;
+        this.centerY = data.tileY;
+      }
       this.radius = data.rangeRadius;
       this.warning = data.rangeWarning;
     } else {
