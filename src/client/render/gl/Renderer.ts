@@ -10,6 +10,7 @@
  */
 
 import type { Config } from "../../../core/configuration/Config";
+import { GameView } from "../../../core/game/GameView";
 import type {
   AttackRingInput,
   BonusEvent,
@@ -182,6 +183,7 @@ export class GPURenderer {
     [];
 
   constructor(
+    game: GameView,
     canvas: HTMLCanvasElement,
     header: RendererConfig,
     terrainBytes: Uint8Array,
@@ -418,7 +420,7 @@ export class GPURenderer {
     );
 
     // --- Range circle (ghost preview radius) ---
-    this.rangeCirclePass = new RangeCirclePass(gl);
+    this.rangeCirclePass = new RangeCirclePass(gl, game);
 
     // --- SAM radius overlay (dashed green circles during build mode) ---
     this.samRadiusPass = new SAMRadiusPass(gl, mapW, this.settings);

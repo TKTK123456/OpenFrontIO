@@ -9,6 +9,7 @@
  */
 
 import type { Config } from "../../../core/configuration/Config";
+import { GameView as game } from "../../../core/game/GameView";
 import type {
   AttackRingInput,
   BonusEvent,
@@ -48,6 +49,7 @@ export class GameView {
     null;
 
   constructor(
+    private game: game,
     private canvas: HTMLCanvasElement,
     private header: RendererConfig,
     private terrainBytes: Uint8Array,
@@ -76,6 +78,7 @@ export class GameView {
 
   private initRenderer = () => {
     this.renderer = new GPURenderer(
+      this.game,
       this.canvas,
       this.header,
       this.terrainBytes,

@@ -242,6 +242,7 @@ export function joinLobby(
 // Build the WebGL view + its glCanvas. Must run before createRenderer so the
 // controllers can be wired directly to the view.
 function createWebGLView(
+  game: GameView,
   terrainMap: TerrainMapData,
   config: Config,
 ): {
@@ -284,6 +285,7 @@ function createWebGLView(
 
   const palette = new Float32Array(4096 * 2 * 4);
   const view = new WebGLGameView(
+    game,
     glCanvas,
     {
       mapWidth,
@@ -468,6 +470,7 @@ async function createClientGame(
   const soundManager = new SoundManager(eventBus, userSettings);
   try {
     const { view, glCanvas, cachedWebGLFrameCallback } = createWebGLView(
+      gameView,
       gameMap,
       config,
     );
