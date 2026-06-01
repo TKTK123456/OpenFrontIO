@@ -881,7 +881,7 @@ export class GPURenderer {
   updateGhostPreview(data: GhostPreviewData | null): void {
     this.structurePass.updateGhostPreview(data);
     this.railroadPass.updateGhostPreview(data);
-    let rangeCirclePassData = structuredClone(data);
+    const rangeCirclePassData = structuredClone(data);
     if (
       rangeCirclePassData !== null &&
       rangeCirclePassData.canUpgrade &&
